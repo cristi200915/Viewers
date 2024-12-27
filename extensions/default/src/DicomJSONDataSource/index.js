@@ -6,6 +6,7 @@ import getImageId from '../DicomWebDataSource/utils/getImageId';
 import getDirectURL from '../utils/getDirectURL';
 
 const metadataProvider = OHIF.classes.MetadataProvider;
+let isLoading = false;
 
 const mappings = {
   studyInstanceUid: 'StudyInstanceUID',
@@ -25,6 +26,28 @@ let _store = {
   // }
   // }
 };
+
+function setLoadingState(loading) {
+  isLoading = loading;
+  const loadingIndicator = document.getElementById('loading-indicator');
+  if (loading && !loadingIndicator) {
+    const spinner = document.createElement('div');
+    spinner.id = 'loading-indicator';
+    spinner.style.position = 'fixed';
+    spinner.style.top = '50%';
+    spinner.style.left = '50%';
+    spinner.style.transform = 'translate(-50%, -50%)';
+    spinner.style.zIndex = '9999';
+    spinner.style.background = 'rgba(0, 0, 0, 0.5)';
+    spinner.style.color = '#fff';
+    spinner.style.padding = '20px';
+    spinner.style.borderRadius = '8px';
+    spinner.innerText = 'Procesando información del estudio...';
+    document.body.appendChild(spinner);
+  } else if (!loading && loadingIndicator) {
+    loadingIndicator.remove();
+  }
+}
 
 function wrapSequences(obj) {
   return Object.keys(obj).reduce(
@@ -76,7 +99,10 @@ function createDicomJSONApi(dicomJsonConfig) {
         });
       }
 
-      const response = await fetch(url);
+      setLoadingState(true);
+
+      try {
+        const response = await fetch(url);
       const data = await response.json();
 
       let StudyInstanceUID;
@@ -112,6 +138,13 @@ function createDicomJSONApi(dicomJsonConfig) {
         url,
         data.studies.map(study => study.StudyInstanceUID)
       );
+      } catch (error) {
+        console.error('Error al cargar el JSON:', error);
+      } finally {
+        // Desactivar estado de carga
+        setLoadingState(false);
+      }
+
     },
     query: {
       studies: {
