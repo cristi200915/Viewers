@@ -44,12 +44,12 @@ module.exports = {
       secondary: {
         light: '#3a3f99',
         main: '#2b166b',
-        dark: '#041c4a',
+        dark: '#272727',
         active: '#1f1f27',
       },
 
       indigo: {
-        dark: '#0b1a42',
+        dark: '#272727',
       },
 
       common: {
@@ -60,9 +60,9 @@ module.exports = {
         active: '#2c3074',
       },
       bkg: {
-        low: '#050615',
-        med: '#090C29',
-        full: '#041C4A',
+        low: '#000000',
+        med: '#121212',
+        full: '#272727',
       },
       info: {
         primary: '#FFFFFF',
@@ -182,7 +182,7 @@ module.exports = {
         700: '#4c51bf',
         800: '#434190',
         900: '#3c366b',
-        dark: '#0b1a42',
+        dark: '#272727',
       },
       purple: {
         100: '#faf5ff',
