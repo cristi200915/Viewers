@@ -73,6 +73,7 @@ const combineFrameInstance = (frame, instance) => {
         ImagePositionPatientToUse = [position[0], position[1], position[2]];
       }
     }
+    console.debug('🚀 ~ ImagePositionPatientToUse:', ImagePositionPatientToUse);
 
     const newInstance = Object.assign(instance, { frameNumber: frameNumber });
 
