@@ -5,7 +5,41 @@ window.config = {
   // whiteLabeling: {},
   extensions: [],
   modes: [],
-  customizationService: {},
+  customizationService: {
+    CornerstoneOverlayTopLef:{
+      id: 'cornerstoneOverlayTopLeft',
+      items: [
+        {
+          id: 'PatientNameOverlay',
+          // Note below that here we are using the customization prototype of
+          // `ohif.overlayItem` which was registered to the customization module in
+          // `ohif/extension-default` extension.
+          customizationType: 'ohif.overlayItem',
+          // the following props are passed to the `ohif.overlayItem` prototype
+          // which is used to render the overlay item based on the label, color,
+          // conditions, etc.
+          attribute: 'PatientName',
+          label: 'Nombre:',
+          title: 'Patient Name',
+          color: 'white',
+          condition: ({ instance }) => instance?.PatientName,
+          contentF: ({ instance, formatters: { formatPN } }) =>
+            formatPN(instance.PatientName) +
+            (instance.PatientSex ? ' (' + instance.PatientSex + ')' : ''),
+        },
+        {
+          id: 'PatientAgeOverlay',
+          customizationType: 'ohif.overlayItem',
+          attribute: 'PatientAge',
+          label: 'Edad:', // Prefijo para la edad del paciente
+          title: 'Patient Age',
+          color: 'white', // Color del texto
+          condition: ({ instance }) => instance?.PatientAge,
+          contentF: ({ instance }) => instance.PatientAge,
+        },
+      ],
+    },
+  },
   showStudyList: true,
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
