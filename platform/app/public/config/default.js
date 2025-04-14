@@ -16,11 +16,9 @@ window.config = {
             attribute: 'PatientName',
             label: '',
             title: 'Patient Name',
-            color: 'yellow',
+            color: 'white',
             condition: ({ instance }) =>
-              instance &&
-              instance.PatientName &&
-              instance.PatientName.Alphabetic,
+              instance && instance.PatientName && instance.PatientName.Alphabetic,
             contentF: ({ instance, formatters: { formatPN } }) =>
               formatPN(instance.PatientName.Alphabetic) +
               ' ' +
@@ -32,16 +30,34 @@ window.config = {
             attribute: 'PatientAge',
             label: 'EDAD:', // Prefijo para la edad del paciente
             title: 'Patient Age',
-            color: 'yellow', // Color del texto
+            color: 'white', // Color del texto
             condition: ({ instance }) => instance?.PatientAge,
             contentF: ({ instance }) => instance.PatientAge.str_replace,
+          },
+          {
+            id: 'StudyDateOverlay',
+            inheritsFrom: 'ohif.overlayItem',
+            attribute: 'StudyDate',
+            label: 'Fecha: ', // Prefijo para la edad del paciente
+            title: 'Study Date',
+            color: 'white', // Color del texto
+            condition: ({ instance }) => instance?.StudyDate,
+          },
+          {
+            id: 'StudyDescriptionOverlay',
+            inheritsFrom: 'ohif.overlayItem',
+            attribute: 'StudyDescription',
+            label: '', // Prefijo para la edad del paciente
+            title: 'Study Description',
+            color: 'white', // Color del texto
+            condition: ({ instance }) => instance?.StudyDescription,
           },
         ],
       },
     },
   ],
 
-    /* CornerstoneOverlayTopLef:{
+  /* CornerstoneOverlayTopLef:{
       id: 'cornerstoneOverlayTopLeft',
       items: [
         {

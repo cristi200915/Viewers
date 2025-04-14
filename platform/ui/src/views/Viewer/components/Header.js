@@ -22,7 +22,7 @@ const Header = () => {
         </div>
         <div className="flex items-center"></div>
         <div className="flex items-center">
-          <span className="text-common-light mr-3 text-lg">FOR INVESTIGATIONAL USE ONLY</span>
+          {/* <span className="text-common-light mr-3 text-lg">FOR INVESTIGATIONAL USE ONLY</span> */}
           <IconButton
             variant="text"
             color="inherit"

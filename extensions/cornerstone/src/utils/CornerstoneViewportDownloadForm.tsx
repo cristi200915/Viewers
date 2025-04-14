@@ -217,9 +217,56 @@ const CornerstoneViewportDownloadForm = ({
     }
 
     const canvas = await html2canvas(divForDownloadViewport as HTMLElement);
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Crear nuevo canvas
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = width;
+    exportCanvas.height = height;
+    const ctx = exportCanvas.getContext('2d');
+
+    // Dibujar la imagen original
+    ctx.drawImage(canvas, 0, 0);
+
+    // Obtener metadata
+    const { displaySetService } = servicesManager.services;
+    const metadata = displaySetService.getMostRecentDisplaySet();
+
+    const patientName = metadata.instance.PatientName?.[0]?.Alphabetic || 'N/A';
+    const patientAge = metadata.instance.PatientAge || 'N/A';
+    const patientSex = metadata.instance.PatientSex || 'N/A';
+    const studyDesc = metadata.instance.StudyDescription || 'N/A';
+    const studyDate = metadata.instance.StudyDate || 'N/A';
+
+    // Estilos
+    ctx.font = '12px Arial';
+    ctx.fillStyle = 'white';
+    ctx.textBaseline = 'top';
+
+    // Dibujar los textos
+    const lineSpacing = 25;
+    let y = 10;
+
+    ctx.fillText(`Paciente: ${patientName}`, 10, y);
+    y += lineSpacing;
+
+    ctx.fillText(`Edad: ${patientAge}`, 10, y);
+    y += lineSpacing;
+
+    ctx.fillText(`Sexo: ${patientSex}`, 10, y);
+    y += lineSpacing;
+
+    ctx.fillText(`Estudio: ${studyDesc}`, 10, y);
+    y += lineSpacing;
+
+    ctx.fillText(`Fecha: ${studyDate}`, 10, y);
+    y += lineSpacing;
+
+    // Descargar la imagen final
     const link = document.createElement('a');
     link.download = `${filename}.${fileType}`;
-    link.href = canvas.toDataURL(`image/${fileType}`, 1.0);
+    link.href = exportCanvas.toDataURL(`image/${fileType}`, 1.0);
     link.click();
   };
 
@@ -240,7 +287,7 @@ const CornerstoneViewportDownloadForm = ({
       onEnableViewport={handleEnableViewport}
       onDisableViewport={handleDisableViewport}
       onDownload={handleDownload}
-      warningState={warningState}
+      warningState={false}
     />
   );
 };
