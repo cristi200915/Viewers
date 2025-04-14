@@ -6,8 +6,42 @@ window.config = {
   // whiteLabeling: {},
   extensions: [],
   modes: [],
-  customizationService: {
-    CornerstoneOverlayTopLef:{
+  customizationService: [
+    {
+      'viewportOverlay.topLeft': {
+        $set: [
+          {
+            id: 'PatientNameOverlay',
+            inheritsFrom: 'ohif.overlayItem',
+            attribute: 'PatientName',
+            label: '',
+            title: 'Patient Name',
+            color: 'yellow',
+            condition: ({ instance }) =>
+              instance &&
+              instance.PatientName &&
+              instance.PatientName.Alphabetic,
+            contentF: ({ instance, formatters: { formatPN } }) =>
+              formatPN(instance.PatientName.Alphabetic) +
+              ' ' +
+              (instance.PatientSex ? '(' + instance.PatientSex + ')' : ''),
+          },
+          {
+            id: 'PatientAgeOverlay',
+            inheritsFrom: 'ohif.overlayItem',
+            attribute: 'PatientAge',
+            label: 'EDAD:', // Prefijo para la edad del paciente
+            title: 'Patient Age',
+            color: 'yellow', // Color del texto
+            condition: ({ instance }) => instance?.PatientAge,
+            contentF: ({ instance }) => instance.PatientAge.str_replace,
+          },
+        ],
+      },
+    },
+  ],
+
+    /* CornerstoneOverlayTopLef:{
       id: 'cornerstoneOverlayTopLeft',
       items: [
         {
@@ -39,8 +73,8 @@ window.config = {
           contentF: ({ instance }) => instance.PatientAge,
         },
       ],
-    },
-  },
+    }, */
+
   showStudyList: true,
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
