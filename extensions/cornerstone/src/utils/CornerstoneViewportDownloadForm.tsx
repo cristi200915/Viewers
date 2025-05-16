@@ -259,7 +259,7 @@ const CornerstoneViewportDownloadForm = ({
     let yLeft = 10;
     let yRight = 10;
     const marginLeft = 10;
-    const marginRight = 300; // o ajusta según tu preferencia visual
+    const marginRight = 10; // o ajusta según tu preferencia visual
 
     // Lado izquierdo
     ctx.fillText(`${patientName} (${patientSex})`, marginLeft, yLeft);
