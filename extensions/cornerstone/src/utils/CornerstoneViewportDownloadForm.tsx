@@ -233,37 +233,53 @@ const CornerstoneViewportDownloadForm = ({
     const { displaySetService } = servicesManager.services;
     const metadata = displaySetService.getMostRecentDisplaySet();
 
-    const patientName = metadata.instance.PatientName?.[0]?.Alphabetic || 'N/A';
+    const patientName = metadata.instance.PatientName || 'N/A';
+    const patientID = metadata.instance.PatientID || 'N/A';
     const patientAge = metadata.instance.PatientAge || 'N/A';
     const patientSex = metadata.instance.PatientSex || 'N/A';
     const studyDesc = metadata.instance.StudyDescription || 'N/A';
-    const studyDate = metadata.instance.StudyDate || 'N/A';
+    const studyDateRaw = metadata.instance.StudyDate || '';
+    const studyTimeRaw = metadata.instance.StudyTime || '';
+    const institution = metadata.instance.InstitutionName || 'N/A';
+
+    // Formatear fecha y hora
+    const studyDate = studyDateRaw
+      ? `${studyDateRaw.slice(6, 8)}-${studyDateRaw.slice(4, 6)}-${studyDateRaw.slice(0, 4)}`
+      : 'N/A';
+    const studyTime = studyTimeRaw
+      ? `${studyTimeRaw.slice(0, 2)}:${studyTimeRaw.slice(2, 4)}:${studyTimeRaw.slice(4, 6)}`
+      : 'N/A';
 
     // Estilos
-    ctx.font = '12px Arial';
+    ctx.font = '16px Arial';
     ctx.fillStyle = 'white';
     ctx.textBaseline = 'top';
 
-    // Dibujar los textos
     const lineSpacing = 25;
-    let y = 10;
+    let yLeft = 10;
+    let yRight = 10;
+    const marginLeft = 10;
+    const marginRight = 300; // o ajusta según tu preferencia visual
 
-    ctx.fillText(`Paciente: ${patientName}`, 10, y);
-    y += lineSpacing;
+    // Lado izquierdo
+    ctx.fillText(`${patientName} (${patientSex})`, marginLeft, yLeft);
+    yLeft += lineSpacing;
+    ctx.fillText(`ID: ${patientID}`, marginLeft, yLeft);
+    yLeft += lineSpacing;
+    ctx.fillText(`EDAD: ${patientAge}`, marginLeft, yLeft);
+    yLeft += lineSpacing;
+    ctx.fillText(`${studyDesc}`, marginLeft, yLeft);
+    yLeft += lineSpacing;
 
-    ctx.fillText(`Edad: ${patientAge}`, 10, y);
-    y += lineSpacing;
+    // Lado derecho
+    ctx.fillText(`${institution}`, width - marginRight, yRight);
+    yRight += lineSpacing;
+    ctx.fillText(`FECHA: ${studyDate}`, width - marginRight, yRight);
+    yRight += lineSpacing;
+    ctx.fillText(`HORA: ${studyTime}`, width - marginRight, yRight);
+    yRight += lineSpacing;
 
-    ctx.fillText(`Sexo: ${patientSex}`, 10, y);
-    y += lineSpacing;
-
-    ctx.fillText(`Estudio: ${studyDesc}`, 10, y);
-    y += lineSpacing;
-
-    ctx.fillText(`Fecha: ${studyDate}`, 10, y);
-    y += lineSpacing;
-
-    // Descargar la imagen final
+    // Descargar imagen final
     const link = document.createElement('a');
     link.download = `${filename}.${fileType}`;
     link.href = exportCanvas.toDataURL(`image/${fileType}`, 1.0);

@@ -17,12 +17,21 @@ window.config = {
             label: '',
             title: 'Patient Name',
             color: 'white',
-            condition: ({ instance }) =>
-              instance && instance.PatientName && instance.PatientName.Alphabetic,
+            condition: ({ instance }) => instance?.PatientName,
             contentF: ({ instance, formatters: { formatPN } }) =>
-              formatPN(instance.PatientName.Alphabetic) +
+              formatPN(instance.PatientName) +
               ' ' +
               (instance.PatientSex ? '(' + instance.PatientSex + ')' : ''),
+          },
+          {
+            id: 'PatientIdOverlay',
+            inheritsFrom: 'ohif.overlayItem',
+            attribute: 'PatientID',
+            label: 'ID:', // Prefijo para la edad del paciente
+            title: 'Identification',
+            color: 'white', // Color del texto
+            condition: ({ instance }) => instance?.PatientID,
+            contentF: ({ instance }) => instance.PatientID,
           },
           {
             id: 'PatientAgeOverlay',
@@ -35,15 +44,6 @@ window.config = {
             contentF: ({ instance }) => instance.PatientAge.str_replace,
           },
           {
-            id: 'StudyDateOverlay',
-            inheritsFrom: 'ohif.overlayItem',
-            attribute: 'StudyDate',
-            label: 'Fecha: ', // Prefijo para la edad del paciente
-            title: 'Study Date',
-            color: 'white', // Color del texto
-            condition: ({ instance }) => instance?.StudyDate,
-          },
-          {
             id: 'StudyDescriptionOverlay',
             inheritsFrom: 'ohif.overlayItem',
             attribute: 'StudyDescription',
@@ -51,6 +51,46 @@ window.config = {
             title: 'Study Description',
             color: 'white', // Color del texto
             condition: ({ instance }) => instance?.StudyDescription,
+          },
+        ],
+      },
+      'viewportOverlay.topRight': {
+        $set: [
+          {
+            id: 'InstitutionOverlay',
+            inheritsFrom: 'ohif.overlayItem',
+            attribute: 'InstitutionName',
+            label: '',
+            title: 'Institution Name',
+            color: 'white',
+            condition: ({ instance }) => instance?.InstitutionName,
+            contentF: ({ instance }) => instance.InstitutionName,
+          },
+          {
+            id: 'StudyDateOverlay',
+            inheritsFrom: 'ohif.overlayItem',
+            attribute: 'StudyDate',
+            label: 'FECHA: ',
+            title: 'Study Date',
+            color: 'white',
+            condition: ({ instance }) => instance?.StudyDate,
+            contentF: ({ instance }) => {
+              const d = instance.StudyDate;
+              return d ? `${d.slice(6, 8)}-${d.slice(4, 6)}-${d.slice(0, 4)}` : '';
+            },
+          },
+          {
+            id: 'StudyTimeOverlay',
+            inheritsFrom: 'ohif.overlayItem',
+            attribute: 'StudyTime',
+            label: 'HORA: ',
+            title: 'Study Time',
+            color: 'white',
+            condition: ({ instance }) => instance?.StudyTime,
+            contentF: ({ instance }) => {
+              const t = instance.StudyTime;
+              return t ? `${t.slice(0, 2)}:${t.slice(2, 4)}:${t.slice(4, 6)}` : '';
+            },
           },
         ],
       },
