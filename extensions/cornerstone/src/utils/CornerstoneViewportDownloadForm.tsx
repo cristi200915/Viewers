@@ -259,9 +259,11 @@ const CornerstoneViewportDownloadForm = ({
     let yLeft = 10;
     let yRight = 10;
     const marginLeft = 10;
-    const marginRight = 10; // o ajusta según tu preferencia visual
+    const marginRight = 10;
+    const rightX = exportCanvas.width - marginRight; // Asegúrate de usar el width del canvas de exportación
 
     // Lado izquierdo
+    ctx.textAlign = 'left';
     ctx.fillText(`${patientName} (${patientSex})`, marginLeft, yLeft);
     yLeft += lineSpacing;
     ctx.fillText(`ID: ${patientID}`, marginLeft, yLeft);
@@ -272,11 +274,12 @@ const CornerstoneViewportDownloadForm = ({
     yLeft += lineSpacing;
 
     // Lado derecho
-    ctx.fillText(`${institution}`, width - marginRight, yRight);
+    ctx.textAlign = 'right';
+    ctx.fillText(`${institution}`, rightX, yRight);
     yRight += lineSpacing;
-    ctx.fillText(`FECHA: ${studyDate}`, width - marginRight, yRight);
+    ctx.fillText(`FECHA: ${studyDate}`, rightX, yRight);
     yRight += lineSpacing;
-    ctx.fillText(`HORA: ${studyTime}`, width - marginRight, yRight);
+    ctx.fillText(`HORA: ${studyTime}`, rightX, yRight);
     yRight += lineSpacing;
 
     // Descargar imagen final
